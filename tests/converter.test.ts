@@ -82,10 +82,24 @@ describe("convertClaudeToOpenCode", () => {
       agents: [
         {
           name: "cheap-agent",
-          description: "Agent using bare alias",
+          description: "Agent using bare haiku alias",
           body: "Test agent.",
           sourcePath: "/tmp/plugin/agents/cheap-agent.md",
           model: "haiku",
+        },
+        {
+          name: "smart-agent",
+          description: "Agent using bare sonnet alias",
+          body: "Test agent.",
+          sourcePath: "/tmp/plugin/agents/smart-agent.md",
+          model: "sonnet",
+        },
+        {
+          name: "powerful-agent",
+          description: "Agent using bare opus alias",
+          body: "Test agent.",
+          sourcePath: "/tmp/plugin/agents/powerful-agent.md",
+          model: "opus",
         },
       ],
       commands: [],
@@ -98,10 +112,17 @@ describe("convertClaudeToOpenCode", () => {
       permissions: "none",
     })
 
-    const agent = bundle.agents.find((a) => a.name === "cheap-agent")
-    expect(agent).toBeDefined()
-    const parsed = parseFrontmatter(agent!.content)
-    expect(parsed.data.model).toBe("anthropic/claude-haiku-4-5")
+    const haikusAgent = bundle.agents.find((a) => a.name === "cheap-agent")
+    expect(haikusAgent).toBeDefined()
+    expect(parseFrontmatter(haikusAgent!.content).data.model).toBe("anthropic/claude-haiku-4-5")
+
+    const sonnetAgent = bundle.agents.find((a) => a.name === "smart-agent")
+    expect(sonnetAgent).toBeDefined()
+    expect(parseFrontmatter(sonnetAgent!.content).data.model).toBe("anthropic/claude-sonnet-4-6")
+
+    const opusAgent = bundle.agents.find((a) => a.name === "powerful-agent")
+    expect(opusAgent).toBeDefined()
+    expect(parseFrontmatter(opusAgent!.content).data.model).toBe("anthropic/claude-opus-4-6")
   })
 
   test("converts hooks into plugin file", async () => {
